@@ -1,4 +1,4 @@
-import { lucideCheck, lucideChevronDown } from '@ng-icons/lucide';
+import { lucideCheck, lucideChevronDown, lucideLightbulb, lucideLightbulbOff } from '@ng-icons/lucide';
 import { RouterOutlet } from '@angular/router';
 import { Component, signal } from '@angular/core';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
@@ -14,13 +14,13 @@ import { BrnCommandImports } from '@spartan-ng/ui-command-brain';
 import { HlmCommandImports } from '@spartan-ng/ui-command-helm';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
-import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmPopoverContentDirective } from '@spartan-ng/ui-popover-helm';
 import {
   BrnPopoverComponent,
   BrnPopoverContentDirective,
   BrnPopoverTriggerDirective,
 } from '@spartan-ng/ui-popover-brain';
+import {HlmLabelDirective} from "@spartan-ng/ui-label-helm";
 
 type Framework = { label: string; value: string };
 
@@ -44,9 +44,10 @@ type Framework = { label: string; value: string };
     HlmLabelDirective,
     HlmInputDirective,
     HlmCardFooterDirective,
-    HlmButtonDirective
+    HlmButtonDirective,
+    HlmIconComponent
   ],
-  providers: [provideIcons({ lucideCheck, lucideChevronDown })],
+  providers: [provideIcons({ lucideCheck, lucideChevronDown, lucideLightbulb, lucideLightbulbOff })],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
