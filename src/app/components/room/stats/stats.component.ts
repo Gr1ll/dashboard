@@ -5,7 +5,8 @@ import {
   HlmCardHeaderDirective,
   HlmCardTitleDirective
 } from "@spartan-ng/ui-card-helm";
-import {HlmIconComponent} from "@spartan-ng/ui-icon-helm";
+import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
+import {lucideThermometer} from "@ng-icons/lucide";
 
 @Component({
   selector: 'app-room-stats',
@@ -18,7 +19,10 @@ import {HlmIconComponent} from "@spartan-ng/ui-icon-helm";
     HlmIconComponent
   ],
   templateUrl: './stats.component.html',
-  styleUrl: './stats.component.scss'
+  styleUrl: './stats.component.scss',
+  providers: [provideIcons({
+    lucideThermometer
+  })],
 })
 export class RoomStatsComponent {
 

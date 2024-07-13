@@ -5,7 +5,8 @@ import {
   HlmCardHeaderDirective,
   HlmCardTitleDirective
 } from "@spartan-ng/ui-card-helm";
-import {HlmIconComponent} from "@spartan-ng/ui-icon-helm";
+import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
+import {lucideLightbulb, lucideLightbulbOff} from "@ng-icons/lucide";
 
 @Component({
   selector: 'app-room-light',
@@ -18,7 +19,11 @@ import {HlmIconComponent} from "@spartan-ng/ui-icon-helm";
     HlmCardContentDirective
   ],
   templateUrl: './light.component.html',
-  styleUrl: './light.component.scss'
+  styleUrl: './light.component.scss',
+  providers: [provideIcons({
+    lucideLightbulb,
+    lucideLightbulbOff
+  })],
 })
 export class LightComponent {
 
