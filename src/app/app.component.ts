@@ -1,4 +1,4 @@
-import { lucideCheck, lucideChevronDown, lucideLightbulb, lucideLightbulbOff } from '@ng-icons/lucide';
+import { lucideCheck, lucideChevronDown, lucideLightbulb, lucideLightbulbOff, lucideThermometer} from '@ng-icons/lucide';
 import { RouterOutlet } from '@angular/router';
 import { Component, signal } from '@angular/core';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
@@ -47,7 +47,7 @@ type Framework = { label: string; value: string };
     HlmButtonDirective,
     HlmIconComponent
   ],
-  providers: [provideIcons({ lucideCheck, lucideChevronDown, lucideLightbulb, lucideLightbulbOff })],
+  providers: [provideIcons({ lucideCheck, lucideChevronDown, lucideLightbulb, lucideThermometer})],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
