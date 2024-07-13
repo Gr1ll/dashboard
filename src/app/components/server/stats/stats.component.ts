@@ -7,7 +7,8 @@ import {
 } from "@spartan-ng/ui-card-helm";
 import {provideIcons} from "@spartan-ng/ui-icon-helm";
 import {lucideCpu, lucideMemoryStick} from "@ng-icons/lucide";
-import * as os from "os"
+import {ServerService} from "../../../core/server/server.service";
+import {provideHttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-server-stats',
@@ -16,30 +17,30 @@ import * as os from "os"
     HlmCardDirective,
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
-    HlmCardContentDirective
+    HlmCardContentDirective,
   ],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
-  providers: [provideIcons({
-    lucideCpu,
-    lucideMemoryStick
-  })],
+  providers: [
+    provideIcons({
+      lucideCpu,
+      lucideMemoryStick
+    })
+  ],
 })
 export class ServerStatsComponent implements OnInit {
-  cpu = os.cpus();
-  totalMemory = os.totalmem();
-  freeMemory = os.freemem();
-  hostname = os.hostname();
-  uptime = os.uptime();
+  cpuUsage?: number;
+  memoryUsage?: number;
+  diskUsage?: number;
+  uptime?: number;
 
-  constructor() {
+  constructor(protected serverService: ServerService) {
   }
 
-  ngOnInit() {
-    console.log(this.cpu);
-    console.log(this.totalMemory);
-    console.log(this.freeMemory);
-    console.log(this.hostname);
-    console.log(this.uptime);
+  ngOnInit(): void {
+    this.serverService.getCpu().subscribe(data => this.cpuUsage = data);
+    this.serverService.getTotalMemory().subscribe(data => this.memoryUsage = data);
+    this.serverService.getFreeMemory().subscribe(data => this.diskUsage = data);
+    this.serverService.getUptime().subscribe(data => this.uptime = data);
   }
 }
