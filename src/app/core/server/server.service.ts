@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {interval, Observable, switchMap} from 'rxjs';
-import { map } from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 
 interface ServerStatistics {
   cpuUsage: number;
@@ -15,7 +15,7 @@ interface ServerStatistics {
   providedIn: 'root'
 })
 export class ServerService {
-  private apiUrl = 'http://localhost:9090/serverStats/';
+  private apiUrl = 'https://api.cyrilk.dev/serverStats/';
   SERVERSTATISTICS$: Observable<ServerStatistics>;
 
   constructor(private http: HttpClient) {
