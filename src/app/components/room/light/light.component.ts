@@ -35,29 +35,23 @@ import {Light} from "../../../types/light";
 export class LightComponent implements OnInit, OnDestroy {
 
   isLightOn: boolean | undefined;
-  private destroy$ = new Subject<void>();
   private subscription: any;
 
   constructor(protected lightService: LightService) {}
 
   ngOnInit() {
+    this.getDataFromService();
   }
 
   getDataFromService() {
-    this.subscription = this.lightService.getLightData().subscribe({
-      next: (data: Light) => {
-        this.isLightOn = data.output;
-        console.log('Light status:', this.isLightOn);
-      },
-      error: (error) => {
-        console.error('Error fetching light status:', error);
-      }
+    this.subscription = this.lightService.getLightData().pipe(
+      distinctUntilChanged((prev, curr) => prev.output === curr.output)
+    ).subscribe((data: Light) => {
+      this.isLightOn = data.output;
     });
   }
 
   ngOnDestroy() {
-    //this.subscription.unsubscribe();
-    //this.destroy$.next();
-    //this.destroy$.complete();
+    this.subscription.unsubscribe();
   }
 }

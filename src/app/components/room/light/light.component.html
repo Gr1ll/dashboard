@@ -3,6 +3,12 @@
     <h3 hlmCardTitle class="font-bold text-4xl">Lights</h3>
   </div>
   <div hlmCardContent class="flex justify-center items-center h-52">
-  {{isLightOn}}
+      @if(isLightOn === true){
+        <hlm-icon class="w-28 h-auto" name="lucideLightbulb"/>
+      } @else if (isLightOn === false) {
+        <hlm-icon class="w-28 h-auto" name="lucideLightbulbOff"/>
+      } @else {
+        <hlm-spinner class="w-20 h-auto"/>
+      }
   </div>
 </section>
