@@ -1,26 +1,36 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Light} from "../../../types/light";
-import {first, Observable, take} from "rxjs";
-import {map} from "rxjs/operators";
+import {
+  Observable,
+  interval,
+  switchMap,
+  catchError,
+  Subject,
+  takeUntil
+} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class LightService {
+export class LightService implements OnDestroy{
+  private destroy$ = new Subject<void>();
 
-  lightStatus?: boolean;
-
-  constructor(private http: HttpClient) {
-    this.getLightData().pipe(
-      first(),
-      map(data => {
-        this.lightStatus = data.output;
-      })
-    ).subscribe();
-  }
+  constructor(private http: HttpClient) {}
 
   getLightData(): Observable<Light> {
-    return this.http.get<Light>('http://192.168.0.46/rpc/Switch.GetStatus?id=0');
+    return interval(5000).pipe(
+      switchMap(() => this.http.get<Light>('http://192.168.0.46/rpc/Switch.GetStatus?id=0')),
+      catchError(error => {
+        console.error('Error fetching light status:', error);
+        throw error; // Rethrow the error to propagate it downstream
+      }),
+      takeUntil(this.destroy$) // Unsubscribe when destroy$ emits
+    );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

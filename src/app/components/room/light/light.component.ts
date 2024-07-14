@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   HlmCardContentDirective,
   HlmCardDirective,
@@ -9,6 +9,9 @@ import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
 import {lucideLightbulb, lucideLightbulbOff} from "@ng-icons/lucide";
 import {LightService} from "../../../core/room/light/light.service";
 import {HlmSpinnerComponent} from "@spartan-ng/ui-spinner-helm";
+import {AsyncPipe} from "@angular/common";
+import {distinctUntilChanged, Subject, takeUntil} from "rxjs";
+import {Light} from "../../../types/light";
 
 @Component({
   selector: 'app-room-light',
@@ -19,7 +22,8 @@ import {HlmSpinnerComponent} from "@spartan-ng/ui-spinner-helm";
     HlmCardTitleDirective,
     HlmIconComponent,
     HlmCardContentDirective,
-    HlmSpinnerComponent
+    HlmSpinnerComponent,
+    AsyncPipe
   ],
   templateUrl: './light.component.html',
   styleUrl: './light.component.scss',
@@ -28,11 +32,32 @@ import {HlmSpinnerComponent} from "@spartan-ng/ui-spinner-helm";
     lucideLightbulbOff
   })],
 })
-export class LightComponent {
+export class LightComponent implements OnInit, OnDestroy {
 
   isLightOn: boolean | undefined;
+  private destroy$ = new Subject<void>();
+  private subscription: any;
 
-  constructor(private lightService: LightService) {
-    this.isLightOn = this.lightService?.lightStatus;
+  constructor(protected lightService: LightService) {}
+
+  ngOnInit() {
+  }
+
+  getDataFromService() {
+    this.subscription = this.lightService.getLightData().subscribe({
+      next: (data: Light) => {
+        this.isLightOn = data.output;
+        console.log('Light status:', this.isLightOn);
+      },
+      error: (error) => {
+        console.error('Error fetching light status:', error);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    //this.subscription.unsubscribe();
+    //this.destroy$.next();
+    //this.destroy$.complete();
   }
 }
