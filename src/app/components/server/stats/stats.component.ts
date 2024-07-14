@@ -5,10 +5,9 @@ import {
   HlmCardHeaderDirective,
   HlmCardTitleDirective
 } from "@spartan-ng/ui-card-helm";
-import {provideIcons} from "@spartan-ng/ui-icon-helm";
+import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
 import {lucideCpu, lucideMemoryStick} from "@ng-icons/lucide";
 import {ServerService} from "../../../core/server/server.service";
-import {provideHttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-server-stats',
@@ -18,6 +17,7 @@ import {provideHttpClient} from "@angular/common/http";
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
     HlmCardContentDirective,
+    HlmIconComponent,
   ],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
@@ -31,16 +31,12 @@ import {provideHttpClient} from "@angular/common/http";
 export class ServerStatsComponent implements OnInit {
   cpuUsage?: number;
   memoryUsage?: number;
-  diskUsage?: number;
-  uptime?: number;
 
   constructor(protected serverService: ServerService) {
   }
 
   ngOnInit(): void {
-    this.serverService.getCpu().subscribe(data => this.cpuUsage = data);
-    this.serverService.getTotalMemory().subscribe(data => this.memoryUsage = data);
-    this.serverService.getFreeMemory().subscribe(data => this.diskUsage = data);
-    this.serverService.getUptime().subscribe(data => this.uptime = data);
+    this.serverService.getCpu().subscribe(data => this.cpuUsage = Math.round(data * 100) / 100);
+    this.serverService.getTotalMemory().subscribe(data => this.memoryUsage = Math.round(data * 100) / 100);
   }
 }

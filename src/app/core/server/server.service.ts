@@ -1,14 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {interval, Observable, switchMap} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 interface ServerStatistics {
   cpuUsage: number;
-  memoryUsage: number;
-  diskUsage: number;
-  networkUsage: number;
-  uptime: number;
+  ramUsage: number;
 }
 
 @Injectable({
@@ -31,14 +28,6 @@ export class ServerService {
   }
 
   getTotalMemory(): Observable<number> {
-    return this.getServerStatistics().pipe(map(stats => stats.memoryUsage));
-  }
-
-  getFreeMemory(): Observable<number> {
-    return this.getServerStatistics().pipe(map(stats => stats.diskUsage));
-  }
-
-  getUptime(): Observable<number> {
-    return this.getServerStatistics().pipe(map(stats => stats.uptime));
+    return this.getServerStatistics().pipe(map(stats => stats.ramUsage));
   }
 }
