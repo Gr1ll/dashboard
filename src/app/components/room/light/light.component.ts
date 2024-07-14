@@ -27,4 +27,5 @@ import {lucideLightbulb, lucideLightbulbOff} from "@ng-icons/lucide";
 })
 export class LightComponent {
 
+  isLightOn = true;
 }
