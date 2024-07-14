@@ -7,6 +7,8 @@ import {
 } from "@spartan-ng/ui-card-helm";
 import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
 import {lucideLightbulb, lucideLightbulbOff} from "@ng-icons/lucide";
+import {LightService} from "../../../core/room/light/light.service";
+import {HlmSpinnerComponent} from "@spartan-ng/ui-spinner-helm";
 
 @Component({
   selector: 'app-room-light',
@@ -16,7 +18,8 @@ import {lucideLightbulb, lucideLightbulbOff} from "@ng-icons/lucide";
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
     HlmIconComponent,
-    HlmCardContentDirective
+    HlmCardContentDirective,
+    HlmSpinnerComponent
   ],
   templateUrl: './light.component.html',
   styleUrl: './light.component.scss',
@@ -27,5 +30,9 @@ import {lucideLightbulb, lucideLightbulbOff} from "@ng-icons/lucide";
 })
 export class LightComponent {
 
-  isLightOn = true;
+  isLightOn: boolean | undefined;
+
+  constructor(private lightService: LightService) {
+    this.isLightOn = this.lightService?.lightStatus;
+  }
 }
