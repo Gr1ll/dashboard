@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {afterNextRender, Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {
   HlmCardContentDirective,
   HlmCardDirective,
@@ -12,6 +12,7 @@ import {HlmSpinnerComponent} from "@spartan-ng/ui-spinner-helm";
 import {AsyncPipe} from "@angular/common";
 import {distinctUntilChanged, Subject, takeUntil} from "rxjs";
 import {Light} from "../../../types/light";
+import {sign} from "node:crypto";
 
 @Component({
   selector: 'app-room-light',
@@ -32,27 +33,21 @@ import {Light} from "../../../types/light";
     lucideLightbulbOff
   })],
 })
-export class LightComponent implements OnInit, OnDestroy {
+export class LightComponent {
 
-  isLightOn: boolean | undefined;
-  private subscription: any;
+  isLightOn: WritableSignal<boolean> = signal(false);
+  isLightDataLoaded: WritableSignal<boolean> = signal(false);
 
   constructor(protected lightService: LightService) {
-  }
-
-  ngOnInit() {
-    //this.getDataFromService();
+    afterNextRender(() => {
+      this.getDataFromService();
+    })
   }
 
   getDataFromService() {
-    this.subscription = this.lightService.getLightData().pipe(
-      distinctUntilChanged((prev, curr) => prev.output === curr.output)
-    ).subscribe((data: Light) => {
-      this.isLightOn = data.output;
+    this.lightService.data$.subscribe((data: Light) => {
+      if (!this.isLightDataLoaded()) this.isLightDataLoaded.set(true);
+      this.isLightOn.set(data.output)
     });
-  }
-
-  ngOnDestroy() {
-    //this.subscription.unsubscribe();
   }
 }

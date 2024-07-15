@@ -2,17 +2,24 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Light} from "../../../types/light";
 import {
-  Observable,
+  interval, map,
+  Observable, startWith, switchMap,
 } from "rxjs";
+import {RoomStats} from "../../../types/room";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LightService {
+  data$ = this.getLightData();
+
   constructor(private http: HttpClient) {
   }
 
   getLightData(): Observable<Light> {
-    return this.http.get<Light>('http://192.168.0.46/rpc/Switch.GetStatus?id=0');
+    return interval(5000).pipe(
+      startWith(undefined),
+      switchMap(() => this.http.get<RoomStats>('https://api.cyrilk.dev/roomStats/').pipe(map(data => data.light))
+      ));
   }
 }
