@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {afterNextRender, Component, inject, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {
   HlmCardContentDirective,
   HlmCardDirective,
@@ -9,6 +9,8 @@ import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
 import {lucideCpu, lucideMemoryStick} from "@ng-icons/lucide";
 import {ServerService} from "../../../core/server/server.service";
 import {catchError} from "rxjs";
+import {AsyncPipe} from "@angular/common";
+import {sign} from "node:crypto";
 
 @Component({
   selector: 'app-server-stats',
@@ -19,6 +21,7 @@ import {catchError} from "rxjs";
     HlmCardTitleDirective,
     HlmCardContentDirective,
     HlmIconComponent,
+    AsyncPipe,
   ],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
@@ -29,21 +32,20 @@ import {catchError} from "rxjs";
     })
   ],
 })
-export class ServerStatsComponent implements OnInit {
-  cpuUsage?: number | undefined;
-  memoryUsage?: number;
+export class ServerStatsComponent {
+  cpuUsage: WritableSignal<number> = signal(0);
+  memoryUsage: WritableSignal<number> = signal(0);
 
-  constructor(protected serverService: ServerService) {
+  constructor(private serverService: ServerService) {
+    afterNextRender(() => {
+      this.getStats();
+    })
   }
 
-  ngOnInit(): void {
-    this.serverService.getCpu().pipe(catchError(
-      async (
-        err) => this.cpuUsage = undefined
-    )).subscribe(data => {
-      if (!data) return;
-      return this.cpuUsage = Math.round(data * 100) / 100;
-    });
-    this.serverService.getTotalMemory().subscribe(data => this.memoryUsage = Math.round(data * 100) / 100);
+  getStats() {
+    this.serverService.data$.subscribe(data => {
+      this.cpuUsage.set(Math.round(data.cpuUsage * 100) / 100);
+      this.memoryUsage.set(Math.round(data.ramUsage * 100) / 100);
+    })
   }
 }

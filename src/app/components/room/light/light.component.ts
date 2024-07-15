@@ -37,10 +37,11 @@ export class LightComponent implements OnInit, OnDestroy {
   isLightOn: boolean | undefined;
   private subscription: any;
 
-  constructor(protected lightService: LightService) {}
+  constructor(protected lightService: LightService) {
+  }
 
   ngOnInit() {
-    this.getDataFromService();
+    //this.getDataFromService();
   }
 
   getDataFromService() {
@@ -52,6 +53,6 @@ export class LightComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 }
