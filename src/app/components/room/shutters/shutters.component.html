@@ -4,7 +4,7 @@
   </div>
   <div hlmCardContent class="flex justify-center items-center h-52">
     <div class="progress">
-      <div class="progress-value" style="--progress-width: 20%;"></div>
+      <div class="progress-value" [ngStyle]="{'--progress-width': shutterPercentage() + '%'}"></div>
     </div>
   </div>
 </section>
