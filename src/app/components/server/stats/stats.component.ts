@@ -8,6 +8,7 @@ import {
 import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
 import {lucideCpu, lucideMemoryStick} from "@ng-icons/lucide";
 import {ServerService} from "../../../core/server/server.service";
+import {catchError} from "rxjs";
 
 @Component({
   selector: 'app-server-stats',
@@ -29,14 +30,20 @@ import {ServerService} from "../../../core/server/server.service";
   ],
 })
 export class ServerStatsComponent implements OnInit {
-  cpuUsage?: number;
+  cpuUsage?: number | undefined;
   memoryUsage?: number;
 
   constructor(protected serverService: ServerService) {
   }
 
   ngOnInit(): void {
-    this.serverService.getCpu().subscribe(data => this.cpuUsage = Math.round(data * 100) / 100);
+    this.serverService.getCpu().pipe(catchError(
+      async (
+        err) => this.cpuUsage = undefined
+    )).subscribe(data => {
+      if (!data) return;
+      return this.cpuUsage = Math.round(data * 100) / 100;
+    });
     this.serverService.getTotalMemory().subscribe(data => this.memoryUsage = Math.round(data * 100) / 100);
   }
 }
