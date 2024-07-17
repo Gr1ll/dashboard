@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:dashboard": "node dist/dashboard/server/server.mjs"
+    "serve:ssr:dashboard": "node dist/dashboard/server/server.mjs",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +54,7 @@
     "ngx-scrollbar": "^13.0.1",
     "ngx-sonner": "^2.0.0",
     "os": "^0.1.2",
+    "prettier": "^3.3.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
@@ -66,6 +68,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "autoprefixer": "^10.4.19",
+    "husky": "^9.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

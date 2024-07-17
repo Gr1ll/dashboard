@@ -1,12 +1,12 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import {
   HlmCardContentDirective,
   HlmCardDirective,
   HlmCardHeaderDirective,
-  HlmCardTitleDirective
-} from "@spartan-ng/ui-card-helm";
-import {HlmIconComponent, provideIcons} from "@spartan-ng/ui-icon-helm";
-import {lucideThermometer} from "@ng-icons/lucide";
+  HlmCardTitleDirective,
+} from '@spartan-ng/ui-card-helm';
+import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
+import { lucideThermometer } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-room-stats',
@@ -16,14 +16,14 @@ import {lucideThermometer} from "@ng-icons/lucide";
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
     HlmCardContentDirective,
-    HlmIconComponent
+    HlmIconComponent,
   ],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
-  providers: [provideIcons({
-    lucideThermometer
-  })],
+  providers: [
+    provideIcons({
+      lucideThermometer,
+    }),
+  ],
 })
-export class RoomStatsComponent {
-
-}
+export class RoomStatsComponent {}
