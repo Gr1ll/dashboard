@@ -1,4 +1,4 @@
-import {afterNextRender, Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {afterNextRender, Component, signal, WritableSignal} from '@angular/core';
 import {
   HlmCardContentDirective,
   HlmCardDirective,
@@ -10,9 +10,7 @@ import {lucideLightbulb, lucideLightbulbOff} from "@ng-icons/lucide";
 import {LightService} from "../../../core/room/light/light.service";
 import {HlmSpinnerComponent} from "@spartan-ng/ui-spinner-helm";
 import {AsyncPipe} from "@angular/common";
-import {distinctUntilChanged, Subject, takeUntil} from "rxjs";
 import {Light} from "../../../types/light";
-import {sign} from "node:crypto";
 
 @Component({
   selector: 'app-room-light',
@@ -35,8 +33,7 @@ import {sign} from "node:crypto";
 })
 export class LightComponent {
 
-  isLightOn: WritableSignal<boolean> = signal(false);
-  isLightDataLoaded: WritableSignal<boolean> = signal(false);
+  isLightOn: WritableSignal<boolean | undefined> = signal(undefined);
 
   constructor(protected lightService: LightService) {
     afterNextRender(() => {
@@ -46,7 +43,6 @@ export class LightComponent {
 
   getDataFromService() {
     this.lightService.data$.subscribe((data: Light) => {
-      if (!this.isLightDataLoaded()) this.isLightDataLoaded.set(true);
       this.isLightOn.set(data.output)
     });
   }

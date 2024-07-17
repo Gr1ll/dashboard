@@ -9,6 +9,7 @@ import {Light} from "../../../types/light";
 import {ShutterService} from "../../../core/room/shutters/shutter.service";
 import {Shutter} from "../../../types/shutters";
 import {NgStyle} from "@angular/common";
+import {HlmSpinnerComponent} from "@spartan-ng/ui-spinner-helm";
 
 @Component({
   selector: 'app-room-shutters',
@@ -18,15 +19,15 @@ import {NgStyle} from "@angular/common";
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
     HlmCardContentDirective,
-    NgStyle
+    NgStyle,
+    HlmSpinnerComponent
   ],
   templateUrl: './shutters.component.html',
   styleUrl: './shutters.component.scss'
 })
 export class ShuttersComponent {
 
-  shutterPercentage: WritableSignal<number> = signal(0);
-  isShutterDataLoaded: WritableSignal<boolean> = signal(false);
+  shutterPercentage: WritableSignal<number | undefined> = signal(undefined);
 
   constructor(private shutterService: ShutterService) {
     afterNextRender(() => {
@@ -36,7 +37,6 @@ export class ShuttersComponent {
 
   getDataFromService() {
     this.shutterService.data$.subscribe((data: Shutter) => {
-      if (!this.isShutterDataLoaded()) this.isShutterDataLoaded.set(true);
       this.shutterPercentage.set(data.current_pos)
     });
   }

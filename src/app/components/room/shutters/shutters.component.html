@@ -3,8 +3,12 @@
     <h3 hlmCardTitle class="font-bold text-4xl">Shutters</h3>
   </div>
   <div hlmCardContent class="flex justify-center items-center h-52">
+    @if (shutterPercentage() !== undefined) {
     <div class="progress">
       <div class="progress-value" [ngStyle]="{'--progress-width': shutterPercentage() + '%'}"></div>
     </div>
+    } @else {
+    <hlm-spinner class="w-20 h-auto"/>
+    }
   </div>
 </section>

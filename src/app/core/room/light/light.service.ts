@@ -17,7 +17,7 @@ export class LightService {
   }
 
   getLightData(): Observable<Light> {
-    return interval(5000).pipe(
+    return interval(2000).pipe(
       startWith(undefined),
       switchMap(() => this.http.get<RoomStats>('https://api.cyrilk.dev/roomStats/').pipe(map(data => data.light))
       ));
