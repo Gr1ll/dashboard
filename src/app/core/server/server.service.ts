@@ -1,6 +1,7 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { interval, Observable, startWith, switchMap } from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {interval, Observable, startWith, switchMap} from 'rxjs';
+import {environment} from "../../../environments/environment";
 
 interface ServerStatistics {
   cpuUsage: number;
@@ -11,11 +12,12 @@ interface ServerStatistics {
   providedIn: 'root',
 })
 export class ServerService {
-  private apiUrl = 'https://api.cyrilk.dev/serverStats/';
+  private apiUrl = environment.serverAPIUrl;
   private http = inject(HttpClient);
   data$: Observable<ServerStatistics> = this.getStatisticsOnClient();
 
-  constructor() {}
+  constructor() {
+  }
 
   getStatisticsOnClient(): Observable<ServerStatistics> {
     return interval(5000).pipe(
