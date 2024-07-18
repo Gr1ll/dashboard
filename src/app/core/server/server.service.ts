@@ -1,7 +1,7 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {interval, Observable, startWith, switchMap} from 'rxjs';
-import {environment} from "../../../environments/environment";
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { interval, Observable, startWith, switchMap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 interface ServerStatistics {
   cpuUsage: number;
@@ -16,8 +16,7 @@ export class ServerService {
   private http = inject(HttpClient);
   data$: Observable<ServerStatistics> = this.getStatisticsOnClient();
 
-  constructor() {
-  }
+  constructor() {}
 
   getStatisticsOnClient(): Observable<ServerStatistics> {
     return interval(5000).pipe(
