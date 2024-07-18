@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {interval, map, Observable, startWith, switchMap} from 'rxjs';
-import {RoomStats} from '../../../types/room';
-import {Shutter} from '../../../types/shutters';
-import {environment} from '../../../../environments/environment';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { interval, map, Observable, startWith, switchMap } from 'rxjs';
+import { RoomStats } from '../../../types/room';
+import { Shutter } from '../../../types/shutters';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +11,7 @@ import {environment} from '../../../../environments/environment';
 export class ShutterService {
   data$ = this.getShutterData();
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getShutterData(): Observable<Shutter> {
     return interval(2000).pipe(
